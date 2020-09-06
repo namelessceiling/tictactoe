@@ -14,17 +14,24 @@ Run it by typing into the terminal : java TicTacToe
 The first player is "X" and the second player is "O"
 
 The player starts the game by typing either (space needed):
-1.If the player wants to play with someone else type "start user user"" 
+
+1.If the player wants to play with someone else type "start user user"
+
 2.If the player wants to play with an AI that randomly makes moves, type "start user AI" or "start AI user"
+
 3.If the person wants to see two AI play against each other, type "start AI AI"
 
 To enter which tile to set your symbol at, type the numbers 1-3 with a space 
+
 ex. "1 1"
 
 This variation follows as for inputting commands:
 
 [1,3][2,3][3,3]
+
 [1,2][2,2][3,2]
+
 [1,1][2,1][3,1]
+
 
 To end the game after one finishes, type "exit"
