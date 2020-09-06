@@ -8,52 +8,32 @@ public class TicTacToe {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         char[][] board = new char[3][3];
-        createBoard(board);
         boolean player = true;
-        int xCoord;
-        int yCoord;
         while(true) {
-            if(player) {
-                System.out.print("Enter the coordinates: ");
-                while(!scanner.hasNextInt()) {
-                    System.out.println("You should enter numbers!");
-                    scanner.next();
-                }
-                xCoord = scanner.nextInt();
-                yCoord = scanner.nextInt();
+            System.out.print("Input command: ");
+            String command = scanner.nextLine();
+            if(command.equals("exit")) {
+                break;
             } else {
-                System.out.println("Making move level \"easy\"");
-                xCoord = random.nextInt(3) + 1;
-                yCoord = random.nextInt(3) + 1;
-            }
-            if(xCoord < 1 || xCoord > 3 || yCoord < 1 || yCoord > 3) {
-                System.out.println("Coordinates should be from 1 to 3!");
-            } else if(board[3 - yCoord][xCoord - 1] == ' ') {
-                if(player) {
-                    board[3 - yCoord][xCoord - 1] = 'X';
+                String[] parts = command.split(" ");
+                if(parts.length != 3) {
+                    System.out.println("Bad parameters!");
+                    continue;
+            	 }
+                createBoard(board);
+                if(parts[0].equals("start") && parts[1].equals("easy") && parts[2].equals("easy")) {
+                    AIVsAI(board, scanner, player, random);
+                } else if(parts[0].equals("start") && parts[1].equals("user") && parts[2].equals("user")) {
+                    userVsUser(board, scanner, player, random);
+                } else if(parts[0].equals("start") && parts[1].equals("user") && parts[2].equals("easy")) {
+                    playerVsAI(board, scanner, player, random, 'X');
+                } else if(parts[0].equals("start") && parts[1].equals("easy") && parts[2].equals("user")) {
                     player = false;
+                    playerVsAI(board, scanner, player, random, 'O');
                 } else {
-                    board[3 - yCoord][xCoord - 1] = 'O';
-                    player = true;
+                    System.out.println("Bad parameters!");
+                    continue;
                 }
-            } else {
-                System.out.println("This cell is occupied! Choose another one!");
-            }
-            boolean oWin = winCondition(board, 'O') || diagonalWin(board, 'O');
-            boolean xWin = winCondition(board, 'X') || diagonalWin(board, 'X');
-            boolean filled = filled(board);
-            printState(board);
-            if(xWin) {
-            	System.out.println("X wins");
-            	break;
-            }
-            if(oWin) {
-            	System.out.println("O wins");
-            	break;
-            }
-            if(!oWin && !xWin && filled) {
-            	System.out.println("Draw");
-            	break;
             }
         }
     }
@@ -120,5 +100,137 @@ public class TicTacToe {
             }
         }
         return filled;
+    }
+    
+    public static void playerVsAI(char[][] board, Scanner scanner, boolean player, Random random, char c) {
+        int xCoord;
+        int yCoord;
+        while(true) {
+            if(player) {
+                System.out.print("Enter the coordinates: ");
+                while(!scanner.hasNextInt()) {
+                    System.out.println("You should enter numbers!");
+                    scanner.next();
+                }
+                xCoord = scanner.nextInt();
+                yCoord = scanner.nextInt();
+            } else {
+                System.out.println("Making move level \"easy\"");
+                xCoord = random.nextInt(3) + 1;
+                yCoord = random.nextInt(3) + 1;
+            }
+            if (xCoord < 1 || xCoord > 3 || yCoord < 1 || yCoord > 3) {
+                System.out.println("Coordinates should be from 1 to 3!");
+            } else if (board[3 - yCoord][xCoord - 1] == ' ') {
+                if(player) {
+                    board[3 - yCoord][xCoord - 1] = c;
+                    player = false;
+                } else if(!player && c == 'X'){
+                    board[3 - yCoord][xCoord - 1] = 'O';
+                    player = true;
+                } else {
+                    board[3 - yCoord][xCoord - 1] = 'X';
+                    player = true;
+                }
+            } else {
+                System.out.println("This cell is occupied! Choose another one!");
+            }
+            boolean oWin = winCondition(board, 'O') || diagonalWin(board, 'O');
+            boolean xWin = winCondition(board, 'X') || diagonalWin(board, 'X');
+            boolean filled = filled(board);
+            printState(board);
+            if(xWin) {
+                System.out.println("X wins");
+                break;
+            }
+            if(oWin) {
+                System.out.println("O wins");
+                break;
+            }
+            if(!oWin && !xWin && filled) {
+                System.out.println("Draw");
+                break;
+            }
+        }
+    }
+    
+    public static void userVsUser(char[][] board, Scanner scanner, boolean player, Random random) {
+        int xCoord;
+        int yCoord;
+        while(true) {
+            System.out.print("Enter the coordinates: ");
+            while(!scanner.hasNextInt()) {
+                System.out.println("You should enter numbers!");
+                scanner.next();
+             }
+            xCoord = scanner.nextInt();
+            yCoord = scanner.nextInt();
+            if(xCoord < 1 || xCoord > 3 || yCoord < 1 || yCoord > 3) {
+                System.out.println("Coordinates should be from 1 to 3!");
+            } else if (board[3 - yCoord][xCoord - 1] == ' ') {
+                if(player) {
+                    board[3 - yCoord][xCoord - 1] = 'X';
+                    player = false;
+                } else {
+                    board[3 - yCoord][xCoord - 1] = 'O';
+                    player = true;
+                }
+            } else {
+                System.out.println("This cell is occupied! Choose another one!");
+            }
+            boolean oWin = winCondition(board, 'O') || diagonalWin(board, 'O');
+            boolean xWin = winCondition(board, 'X') || diagonalWin(board, 'X');
+            boolean filled = filled(board);
+            printState(board);
+            if(xWin) {
+                System.out.println("X wins");
+                break;
+            }
+            if(oWin) {
+                System.out.println("O wins");
+                break;
+            }
+            if(!oWin && !xWin && filled) {
+                System.out.println("Draw");
+                break;
+            }
+        }
+    }
+    
+    public static void AIVsAI(char[][] board, Scanner scanner, boolean player, Random random) {
+        int xCoord;
+        int yCoord;
+        while(true) {
+            System.out.println("Making move level \"easy\"");
+            xCoord = random.nextInt(3) + 1;
+            yCoord = random.nextInt(3) + 1;
+            if(board[3 - yCoord][xCoord - 1] == ' ') {
+                if(player) {
+                    board[3 - yCoord][xCoord - 1] = 'X';
+                    player = false;
+                } else {
+                    board[3 - yCoord][xCoord - 1] = 'O';
+                    player = true;
+                }
+            } else {
+                System.out.println("This cell is occupied! Choose another one!");
+            }
+            boolean oWin = winCondition(board, 'O') || diagonalWin(board, 'O');
+            boolean xWin = winCondition(board, 'X') || diagonalWin(board, 'X');
+            boolean filled = filled(board);
+            printState(board);
+            if(xWin) {
+                System.out.println("X wins");
+                break;
+            }
+            if(oWin) {
+                System.out.println("O wins");
+                break;
+            }
+            if(!oWin && !xWin && filled) {
+                System.out.println("Draw");
+                break;
+            }
+        }
     }
 }
