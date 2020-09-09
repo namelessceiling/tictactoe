@@ -7,7 +7,7 @@ If either player is unable to get 3 in a row, it results in a draw when everythi
 
 Instructions
 ----------------
-Compile by typing into the terminal the lines : TicTacToe.java
+Compile by typing into the terminal the lines : javac TicTacToe.java AI.java Board.java Game.java Player.java
 
 Run it by typing into the terminal : java TicTacToe
 
@@ -27,11 +27,11 @@ ex. "1 1"
 
 This variation follows as for inputting commands:
 
-[1,3][2,3][3,3]
+[1,1][1,2][1,3]
 
-[1,2][2,2][3,2]
+[2,1][2,2][2,3]
 
-[1,1][2,1][3,1]
+[3,1][3,2][3,3]
 
 
 To end the game after one finishes, type "exit"
